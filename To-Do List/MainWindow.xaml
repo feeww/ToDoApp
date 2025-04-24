@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:To_Do_List"
         mc:Ignorable="d"
-        Title="TaskManager" 
+        Title="To Do❤️"
+        Icon="/Resources/icon.png"
         Height="600" 
         Width="450"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource BackgroundColor}"
+        Background="{DynamicResource BackgroundColor}"
         FontFamily="Segoe UI">
     <Border Padding="24">
         <Grid>
@@ -20,13 +21,27 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Header -->
-            <TextBlock Grid.Row="0" 
-                       Text="Task Manager" 
-                       FontSize="28" 
-                       FontWeight="SemiBold" 
-                       Margin="0,0,0,24"
-                       Foreground="{StaticResource TextPrimaryColor}"/>
+            <!-- Header with Theme Toggle -->
+            <Grid Grid.Row="0" Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" 
+                           Text="Task Manager" 
+                           FontSize="28" 
+                           FontWeight="SemiBold" 
+                           Foreground="{DynamicResource TextPrimaryColor}"
+                           VerticalAlignment="Center"/>
+
+                <ToggleButton Grid.Column="1"
+                              x:Name="ThemeToggle"
+                              Style="{StaticResource ThemeToggleButtonStyle}"
+                              Checked="ThemeToggle_Checked"
+                              Unchecked="ThemeToggle_Unchecked"
+                              IsChecked="{Binding IsDarkTheme}"/>
+            </Grid>
 
             <!-- Add Task Area -->
             <Grid Grid.Row="1" Margin="0,0,0,16">
@@ -49,9 +64,9 @@
 
             <!-- Task List -->
             <Border Grid.Row="2" 
-                    Background="{StaticResource SurfaceColor}" 
+                    Background="{DynamicResource SurfaceColor}" 
                     CornerRadius="8"
-                    BorderBrush="{StaticResource DividerColor}"
+                    BorderBrush="{DynamicResource DividerColor}"
                     BorderThickness="1"
                     Padding="12">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -78,13 +93,13 @@
 
                 <TextBlock Grid.Column="0" 
                            Text="{Binding TaskCountText}" 
-                           Foreground="{StaticResource TextSecondaryColor}"
+                           Foreground="{DynamicResource TextSecondaryColor}"
                            VerticalAlignment="Center"/>
 
                 <Button Grid.Column="1" 
                         Content="Clear Completed" 
                         Style="{StaticResource ModernButtonStyle}"
-                        Background="{StaticResource ErrorColor}"
+                        Background="{DynamicResource ErrorColor}"
                         Command="{Binding ClearCompletedCommand}"/>
             </Grid>
         </Grid>

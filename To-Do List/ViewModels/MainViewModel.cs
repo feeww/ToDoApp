@@ -13,7 +13,10 @@ namespace To_Do_List.ViewModels
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly ITodoService _todoService;
+        private readonly ISettingsService _settingsService;
+
         private string _newTaskText;
+        private bool _isDarkTheme;
 
         public ObservableCollection<TodoItem> Tasks { get; }
         public ICommand AddTaskCommand { get; }
@@ -34,12 +37,29 @@ namespace To_Do_List.ViewModels
             }
         }
 
+        public bool IsDarkTheme
+        {
+            get => _isDarkTheme;
+            set
+            {
+                if (_isDarkTheme != value)
+                {
+                    _isDarkTheme = value;
+                    _settingsService.SaveThemeSetting(value);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public string TaskCountText => $"{Tasks.Count} Tasks, {Tasks.Count(t => t.IsCompleted)} Completed";
 
-        public MainViewModel(ITodoService todoService)
+        public MainViewModel(ITodoService todoService, ISettingsService settingsService)
         {
             _todoService = todoService ?? throw new ArgumentNullException(nameof(todoService));
+            _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
+
             Tasks = new ObservableCollection<TodoItem>(_todoService.GetAllTasks());
+            _isDarkTheme = _settingsService.GetThemeSetting();
 
             AddTaskCommand = new RelayCommand(AddTask, CanAddTask);
             DeleteCommand = new RelayCommand(DeleteTask);
@@ -50,6 +70,7 @@ namespace To_Do_List.ViewModels
                 task.PropertyChanged += Task_PropertyChanged;
             }
         }
+
 
         private bool CanAddTask(object parameter)
         {

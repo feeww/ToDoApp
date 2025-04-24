@@ -11,8 +11,9 @@ namespace To_Do_List
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             ITodoService todoService = new TodoService();
+            ISettingsService settingsService = new SettingsService();
 
-            var mainViewModel = new MainViewModel(todoService);
+            var mainViewModel = new MainViewModel(todoService, settingsService);
 
             var mainWindow = new MainWindow
             {
